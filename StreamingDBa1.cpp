@@ -14,6 +14,9 @@ streaming_database::~streaming_database()
 StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bool vipOnly)
 {
 	// TODO: Your code goes here
+    Movie * m = new Movie(movieId, genre, views, vipOnly);
+    all_movies_id_tree.insert(std::pair<int, Movie*>(movieId,m));
+
 	return StatusType::SUCCESS;
 }
 

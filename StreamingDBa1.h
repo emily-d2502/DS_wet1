@@ -15,13 +15,24 @@
 #ifndef STREAMINGDBA1_H_
 #define STREAMINGDBA1_H_
 
+#include <map>
+#define AVL std::map
+
+
 #include "wet1util.h"
+#include "User.h"
+#include "Movie.h"
+#include "Group.h"
+
 
 class streaming_database {
 private:
-	//
-	// Here you may add anything you want
-	//
+    AVL<int, User*> all_users_id_tree;
+    AVL<int, Movie*> all_movies_id_tree;
+    AVL<Movie, Movie*> all_movies_genre_tree;
+    AVL<int, Group*> all_groups_id_tree;
+    AVL<Movie, Movie*> genre_trees_array[5];
+
 	
 public:
 	// <DO-NOT-MODIFY> {
