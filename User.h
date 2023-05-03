@@ -1,14 +1,15 @@
 
 #include "wet1util.h"
+#include "Group.h"
 
 class User {
 public:
     User();
-    User(const AVL& other) = delete;
-    User& operator=(const AVL& other) = delete;
+    User(const User& other) = delete;
+    User& operator=(const User& other) = delete;
     ~User();
 private:
-    NODE _id;
+    int _id;
     bool _vip;
     int _views[5];
     Group *_group;

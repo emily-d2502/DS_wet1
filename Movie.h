@@ -4,8 +4,8 @@
 class Movie {
 public:
     Movie();
-    Movie(const AVL& other) = delete;
-    Movie& operator=(const AVL& other) = delete;
+    Movie(const Movie& other) = delete;
+    Movie& operator=(const Movie& other) = delete;
     ~Movie();
 private:
     int _id;
