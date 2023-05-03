@@ -11,6 +11,6 @@ public:
 private:
     int _id;
     bool _vip;
-    int _views[5];
+    int _views[4];
     Group *_group;
 };

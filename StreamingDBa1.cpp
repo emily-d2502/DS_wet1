@@ -13,9 +13,22 @@ streaming_database::~streaming_database()
 
 StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bool vipOnly)
 {
-	// TODO: Your code goes here
-    Movie * m = new Movie(movieId, genre, views, vipOnly);
-    all_movies_id_tree.insert(std::pair<int, Movie*>(movieId,m));
+    if(genre == 4 || movieId <= 0 || views<0)
+        return StatusType::INVALID_INPUT;
+    try {
+        Movie * m = new Movie(movieId, genre, views, vipOnly);
+        if (all_movies_id_tree.find(movieId))
+        {
+            delete
+        }
+        all_movies_id_tree.insert(std::pair<int, Movie*>(movieId,m));
+        all_movies_rank_tree.insert(std::pair<Movie, Movie*>(*m,m));
+        genre_trees_array[genre].insert(std::pair<Movie, Movie*>(*m,m));
+    }catch (const std::exception& e){
+        return StatusType::ALLOCATION_ERROR;
+    } catch (const Ke& e) {
+    return StatusType::FAILURE;
+
 
 	return StatusType::SUCCESS;
 }
