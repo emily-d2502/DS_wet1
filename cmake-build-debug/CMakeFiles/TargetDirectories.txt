@@ -1,3 +1,0 @@
-/Users/adi/Technion/mivne netunim/DS_wet1/cmake-build-debug/CMakeFiles/DS_wet1.dir
-/Users/adi/Technion/mivne netunim/DS_wet1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/adi/Technion/mivne netunim/DS_wet1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
