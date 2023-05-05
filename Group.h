@@ -11,7 +11,8 @@ public:
     ~Group();
 private:
     int _id;
+    int _vip;
     User* _members[];
-    int _total_views[5];
-    int _views_parameter[5];
+    int _total_views[4];
+    int _group_views_parameter[4];
 };
