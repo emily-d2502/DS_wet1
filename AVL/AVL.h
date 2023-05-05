@@ -16,6 +16,10 @@ public:
     void insert(const K& key, T *data);
     void remove(const K& key);
 
+    void inOrderSetUp(Node * r, int * output, int * i);
+    int getSize() const;
+    int getMax() const;
+
     class KeyExists {};
     class KeyNotFound {};
 #if defined(DBUG)
@@ -23,7 +27,7 @@ public:
 #else
 private:
 #endif
-    NODE *_root;
+    Node *_root;
     int _size;
     
     void rotations(NODE *v);
@@ -72,7 +76,7 @@ T& AVL<T,K>::find(const K& key)
 template<typename T, typename K>
 void AVL<T,K>::insert(const K& key, T *data)
 {
-    NODE *v = new NODE(key, data);
+    Node *v = new NODE(key, data);
     _root = insert(_root, v);
     ++_size;
 }
@@ -177,6 +181,19 @@ NODE *AVL<T,K>::closest_up(NODE *v)
 }
 
 template<typename T, typename K>
+int AVL<T,K>::getSize() const {
+    return this->size_t;
+}
+
+template<typename T, typename K>
+int AVL<T,K>::getMax() const {
+    Node* current = this->_root;
+    while(current->_right)
+        current = current->_r;
+    return (current->getData())->getID();
+}
+
+template<typename T, typename K>
 NODE *AVL<T,K>::closest_down(NODE *v)
 {
     assert(v->_left);
@@ -186,3 +203,17 @@ NODE *AVL<T,K>::closest_down(NODE *v)
     }
     return res;
 }
+
+template<typename T, typename K>
+void AVL<T,K>::inOrderSetUp(Node* r, int * output, int * i){
+    if (r == NULL)
+        return;
+    /* first recur on left child */
+    inOrderSetUp(r->_left);
+    /* then put the data of node */
+    output[*i] = r->_data;
+    (*i)++;
+    /* now recur on right child */
+    inOrderSetUp(r->_right);
+}
+

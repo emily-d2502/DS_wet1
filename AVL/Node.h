@@ -16,6 +16,7 @@ public:
     ~Node() = default;
     static void swap(Node *v, Node *u);
 
+    T getData();
 #if defined(DBUG)
 public:
 #else
@@ -165,4 +166,9 @@ void Node<T,K>::rl_rotation(Node *v)
     ll_rotation(v->_right);
     rr_rotation(v);
     v->_height = height(v);
+}
+
+template<typename T, typename K>
+T Node<T,K>::getData(){
+    return this->_data
 }

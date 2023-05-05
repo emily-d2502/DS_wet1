@@ -23,7 +23,7 @@
 #include "User.h"
 #include "Movie.h"
 #include "Group.h"
-
+#include "AVL.h"
 
 class streaming_database {
 private:
@@ -33,7 +33,6 @@ private:
     AVL<int, Group*> all_groups_id_tree;
     AVL<Movie, Movie*> genre_trees_array[4];
 
-	
 public:
 	// <DO-NOT-MODIFY> {
 	

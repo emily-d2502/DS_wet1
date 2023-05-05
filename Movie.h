@@ -14,6 +14,15 @@ public:
     Movie(const Movie& other) = delete;
     Movie& operator=(const Movie& other) = delete;
     ~Movie() = default;
+
+    int getGenre() const;
+    int getVIP() const;
+    int getID() const;
+
+
+    void Movie::addTotalPoints(int points);
+    void Movie::addNumberRatings();
+
 private:
     int _id;
     Genre _genre;
@@ -22,3 +31,23 @@ private:
     int _tot_points;
     int _number_of_ratings;
 };
+
+int Movie::getGenre() const {
+    return this->_genre;
+}
+
+int Movie::getVIP() const {
+    return this->_vip;
+}
+
+int Movie::getID() const {
+    return this->_id;
+}
+
+void Movie::addTotalPoints(int points) {
+    this->_tot_points = _tot_points + points;
+}
+
+void Movie::addNumberRatings() {
+    this->_number_of_ratings++;
+}

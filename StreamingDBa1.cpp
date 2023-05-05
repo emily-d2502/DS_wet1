@@ -17,26 +17,39 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
         return StatusType::INVALID_INPUT;
     try {
         Movie * m = new Movie(movieId, genre, views, vipOnly);
-        if (all_movies_id_tree.find(movieId))
-        {
-            delete
-        }
         all_movies_id_tree.insert(std::pair<int, Movie*>(movieId,m));
         all_movies_rank_tree.insert(std::pair<Movie, Movie*>(*m,m));
         genre_trees_array[genre].insert(std::pair<Movie, Movie*>(*m,m));
+        all_movie_counter++;
+        per_genre_counter[genre]++;
     }catch (const std::exception& e){
         return StatusType::ALLOCATION_ERROR;
-    } catch (const Ke& e) {
-    return StatusType::FAILURE;
-
-
+    } catch (const KeyNotFound& e) {  //the exception caught is defined in AVL and currently we use MAP, to solve
+        delete m;
+        return StatusType::FAILURE;
+    }
 	return StatusType::SUCCESS;
 }
 
 StatusType streaming_database::remove_movie(int movieId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+    if(movieId <= 0)
+        return StatusType::INVALID_INPUT;
+    try {
+        Movie * current = all_movies_id_tree.find(movieId));
+//        all_movies_id_tree.remove(movieId);
+//        all_movies_rank_tree.remove(m);
+//        genre_trees_array[current->getGenre()].remove(m);
+//        We should talk about the data parameter in teh AVL tree
+        all_movie_counter--;
+        per_genre_counter[current->getGenre()]--;
+
+    } catch (const std::exception& e) {
+        return StatusType::ALLOCATION_ERROR;
+    } catch (const KeyNotFound& e) { //the exception caught is defined in AVL and currently we use MAP, to solve
+        return StatusType::FAILURE;
+    }
+    return StatusType::SUCCESS;
 }
 
 StatusType streaming_database::add_user(int userId, bool isVip)
@@ -83,16 +96,22 @@ StatusType streaming_database::group_watch(int groupId,int movieId)
 
 output_t<int> streaming_database::get_all_movies_count(Genre genre)
 {
-    // TODO: Your code goes here
-    static int i = 0;
-    return (i++==0) ? 11 : 2;
+    if (genre == 4)
+        return all_movies_id_tree.getSize(); //right now we use map
+    return genre_trees_array[genre].getSize();
 }
 
 StatusType streaming_database::get_all_movies(Genre genre, int *const output)
 {
-    // TODO: Your code goes here
-    output[0] = 4001;
-    output[1] = 4002;
+    if (output == NULL)
+        return StatusType::INVALID_INPUT;
+    int i = 0;
+    if (genre == 4){
+        inOrderSetUp(all_movies_rank_tree->_root, output, &i);
+    }
+    inOrderSetUp(genre_trees_array[genre]->_root, output, &i);
+    if (output == NULL)
+        return StatusType::FAILURE;
     return StatusType::SUCCESS;
 }
 
@@ -104,15 +123,58 @@ output_t<int> streaming_database::get_num_views(int userId, Genre genre)
 
 StatusType streaming_database::rate_movie(int userId, int movieId, int rating)
 {
-    // TODO: Your code goes here
+    if (userId <= 0 || movieId <= 0 || rating < 0 || rating >100)
+        return StatusType::INVALID_INPUT;
+    try {
+        User u = all_users_id_tree.find(userId);
+        Movie m = all_movies_id_tree.find(userId);
+        if (m.getVIP() && !(u.getVIP()))
+            return StatusType::FAILURE;
+
+        all_movies_rank_tree.remove(m);
+        genre_trees_array[current->getGenre()].remove(m);
+
+        m.addNumberRatings();
+        m.addTotalPoints(rating);
+
+        all_movies_rank_tree.insert(std::pair<Movie, Movie*>(*m,m));
+        genre_trees_array[m->getGenre()].insert(std::pair<Movie, Movie*>(*m,m));
+
+    } catch (const KeyNotFound& e)   //the exception caught is defined in AVL and currently we use MAP, to solve
+        return StatusType::FAILURE;
+    }
     return StatusType::SUCCESS;
 }
 
 output_t<int> streaming_database::get_group_recommendation(int groupId)
 {
-	// TODO: Your code goes here
-    static int i = 0;
-    return (i++==0) ? 11 : 2;
+
+    if (groupId <= 0)
+        return StatusType::INVALID_INPUT;
+    try {
+        Group g = all_groups_id_tree.find(groupId);
+        if(g.getSize() == 0)
+            return StatusType::FAILURE;
+
+
+        int genre = 0;
+        int* array = g.getTotalViews();
+
+        for(int i = 0; i<4; i++){
+            if (array[i]> genre)
+                genre = array[i];
+        }
+
+        if (genre_trees_array[genre].getSize() == 0)
+            return StatusType::FAILURE;
+
+        return genre_trees_array[genre].getMax();
+    } catch (const KeyNotFound& e)   //the exception caught is defined in AVL and currently we use MAP, to solve
+    return StatusType::FAILURE;
+    }
+
+
+
 }
 
 
