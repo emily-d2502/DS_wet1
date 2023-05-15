@@ -16,6 +16,7 @@ public:
     ~Node() = default;
     static void swap(Node *v, Node *u);
 
+    void deleteData(Node<T,K>* root);
     T getData();
 #if defined(DBUG)
 public:
@@ -158,6 +159,22 @@ void Node<T,K>::lr_rotation(Node *v)
     rr_rotation(v->_left);
     ll_rotation(v);
     v->_height = height(v);
+}
+
+
+template<class T,class K>
+void Node<T,K>::deleteData(Node<T,K>* root)
+{
+    if (root == nullptr){
+        return;
+    }
+    if (root->left){
+        root->left->deleteData(root->left);
+    }
+    if (root->right){
+        root->right->deleteData(root->right);
+    }
+    delete root->data;
 }
 
 template<typename T, typename K>

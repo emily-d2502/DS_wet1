@@ -7,7 +7,8 @@ streaming_database::streaming_database()
 
 streaming_database::~streaming_database()
 {
-	// TODO: Your code goes here
+    all_users_id_tree->
+
 }
 
 
@@ -17,9 +18,9 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
         return StatusType::INVALID_INPUT;
     try {
         Movie * m = new Movie(movieId, genre, views, vipOnly);
-        all_movies_id_tree.insert(std::pair<int, Movie*>(movieId,m));
-        all_movies_rank_tree.insert(std::pair<Movie, Movie*>(*m,m));
-        genre_trees_array[genre].insert(std::pair<Movie, Movie*>(*m,m));
+        all_movies_id_tree.insert(movieId,m);
+        all_movies_rank_tree.insert(std::pair<Movie, Movie>(m,m));
+        genre_trees_array[genre].insert(std::pair<Movie, Movie>(m,m));
         all_movie_counter++;
         per_genre_counter[genre]++;
     }catch (const std::exception& e){
@@ -137,8 +138,8 @@ StatusType streaming_database::rate_movie(int userId, int movieId, int rating)
         m.addNumberRatings();
         m.addTotalPoints(rating);
 
-        all_movies_rank_tree.insert(std::pair<Movie, Movie*>(*m,m));
-        genre_trees_array[m->getGenre()].insert(std::pair<Movie, Movie*>(*m,m));
+        all_movies_rank_tree.insert(std::pair<Movie, Movie>(m,m));
+        genre_trees_array[m->getGenre()].insert(std::pair<Movie, Movie>(m,m));
 
     } catch (const KeyNotFound& e)   //the exception caught is defined in AVL and currently we use MAP, to solve
         return StatusType::FAILURE;

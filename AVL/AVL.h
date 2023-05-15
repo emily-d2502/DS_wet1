@@ -20,6 +20,9 @@ public:
     int getSize() const;
     int getMax() const;
 
+    void deleteTreeData();
+
+
     class KeyExists {};
     class KeyNotFound {};
 #if defined(DBUG)
@@ -217,3 +220,7 @@ void AVL<T,K>::inOrderSetUp(Node* r, int * output, int * i){
     inOrderSetUp(r->_right);
 }
 
+template<typename T, typename K>
+void AVL<T,K>::deleteTreeData(){
+    _root->deleteData(_root);
+}

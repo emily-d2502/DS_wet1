@@ -15,6 +15,8 @@ public:
     Movie& operator=(const Movie& other) = delete;
     ~Movie() = default;
 
+    bool operator>(const Movie& movie) const;
+
     int getGenre() const;
     int getVIP() const;
     int getID() const;
@@ -50,4 +52,13 @@ void Movie::addTotalPoints(int points) {
 
 void Movie::addNumberRatings() {
     this->_number_of_ratings++;
+}
+
+bool Movie::operator>(const Movie& movie)const{
+//    if (playersAbility > key.getPlayersAbility()){
+//        return true;
+//    } else if(playersAbility < key.getPlayersAbility()){
+//        return false;
+//    }
+//    return teamId > key.getID();
 }
