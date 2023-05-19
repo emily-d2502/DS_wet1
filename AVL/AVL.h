@@ -12,25 +12,22 @@ public:
     AVL& operator=(const AVL& other) = delete;
     ~AVL();
     
-    T& find(const K& key);
+    T* find(const K& key);
     void insert(const K& key, T *data);
     void remove(const K& key);
 
-    void inOrderSetUp(Node * r, int * output, int * i);
+    void inOrderSetUp(NODE * r, int * output, int * i);
     int getSize() const;
-    int getMax() const;
+    NODE* getRoot() const;
+    T* getMax() const;
 
     void deleteTreeData();
 
 
     class KeyExists {};
     class KeyNotFound {};
-#if defined(DBUG)
-public:
-#else
 private:
-#endif
-    Node *_root;
+    NODE *_root;
     int _size;
     
     void rotations(NODE *v);
@@ -54,7 +51,7 @@ AVL<T,K>::~AVL()
 }
 
 template<typename T, typename K>
-T& AVL<T,K>::find(const K& key)
+T* AVL<T,K>::find(const K& key)
 {
     if (_root == nullptr) {
         throw KeyNotFound(); 
@@ -64,7 +61,7 @@ T& AVL<T,K>::find(const K& key)
     while(p != nullptr)
     {
         if (p->_key == key) {
-            return *p->_data; 
+            return p->_data;
         }
 
         if (p->_key < key) {
@@ -79,7 +76,7 @@ T& AVL<T,K>::find(const K& key)
 template<typename T, typename K>
 void AVL<T,K>::insert(const K& key, T *data)
 {
-    Node *v = new NODE(key, data);
+    NODE *v = new NODE(key, data);
     _root = insert(_root, v);
     ++_size;
 }
@@ -185,15 +182,20 @@ NODE *AVL<T,K>::closest_up(NODE *v)
 
 template<typename T, typename K>
 int AVL<T,K>::getSize() const {
-    return this->size_t;
+    return this->_size;
+}
+template<typename T, typename K>
+NODE* AVL<T,K>::getRoot() const{
+    return this->_root;
 }
 
+
 template<typename T, typename K>
-int AVL<T,K>::getMax() const {
-    Node* current = this->_root;
+T* AVL<T,K>::getMax() const {
+    NODE* current = this->_root;
     while(current->_right)
-        current = current->_r;
-    return (current->getData())->getID();
+        current = current->_right;
+    return (current->getData());
 }
 
 template<typename T, typename K>
@@ -208,7 +210,7 @@ NODE *AVL<T,K>::closest_down(NODE *v)
 }
 
 template<typename T, typename K>
-void AVL<T,K>::inOrderSetUp(Node* r, int * output, int * i){
+void AVL<T,K>::inOrderSetUp(NODE* r, int * output, int * i){
     if (r == NULL)
         return;
     /* first recur on left child */

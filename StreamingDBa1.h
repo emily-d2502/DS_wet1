@@ -25,11 +25,13 @@
 
 class streaming_database {
 private:
-    AVL<int, User> all_users_id_tree;
-    AVL<int, Movie> all_movies_id_tree;
+
+    AVL<User, int> all_users_id_tree;
+    AVL<Movie, int> all_movies_id_tree;
     AVL<Movie, Movie> all_movies_rank_tree;
-    AVL<int, Group> all_groups_id_tree;
+    AVL<Group, int> all_groups_id_tree;
     AVL<Movie, Movie> genre_trees_array[4];
+
 
 public:
 	// <DO-NOT-MODIFY> {

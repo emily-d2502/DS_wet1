@@ -25,7 +25,7 @@ private:
 #endif
     GENERIC_FRIEND_CLASS(AVL);
 
-    K _key;
+    const K& _key;
     T* _data;
     Node *_right;
     Node *_left;
@@ -45,9 +45,9 @@ private:
 };
 
 template<typename T, typename K>
-Node<T,K>::Node(const K& key, T *data)
+Node<T,K>::Node(const K& key, T *data):
+_key(key)
 {
-    _key = key;
     _data = data;
     _left = nullptr;
     _right = nullptr;
@@ -187,5 +187,5 @@ void Node<T,K>::rl_rotation(Node *v)
 
 template<typename T, typename K>
 T Node<T,K>::getData(){
-    return this->_data
+    return this->_data;
 }
