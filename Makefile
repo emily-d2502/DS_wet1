@@ -1,26 +1,33 @@
 CC = clang++
-OBJS = main.o 
-TEST_OBJS = testing_avl.o
+OBJS = build/maina1.o build/StreamingDBa1.o build/User.o build/Movie.o build/Group.o
 PROG_NAME = main
-TEST_NAME = test
-DEBUG_FLAG = -g
-COMP_FLAG = -std=c++11
+COMP_FLAG = -std=c++11 
 AVL_FILES = AVL/AVL.h AVL/Node.h AVL/avl_utilities.h AVL/class_defines.h
 
-
 $(PROG_NAME) : $(OBJS)
-	$(CC) -o $(PROG_NAME) $(OBJS)
+	$(CC) -o $(PROG_NAME) $(OBJS) 
 
-$(TEST_NAME) : $(TEST_OBJS)
-	$(CC) -o $(TEST_NAME) $(TEST_OBJS)
+build/maina1.o: maina1.cpp
+	$(CC) -c $(COMP_FLAG) maina1.cpp
+	mv maina1.o build
 
-main.o: main.cpp macros.h
-	$(CC) -c $(COMP_FLAG) main.cpp
+build/StreamingDBa1.o: StreamingDBa1.cpp
+	$(CC) -c $(COMP_FLAG) StreamingDBa1.cpp
+	mv StreamingDBa1.o build
 
-testing_avl.o: testing_avl.cpp macros.h $(AVL_FILES)
-	$(CC) -c $(COMP_FLAG) testing_avl.cpp
+build/User.o: Classes/User.cpp
+	$(CC) -c $(COMP_FLAG) Classes/User.cpp
+	mv User.o build
+
+build/Movie.o: Classes/Movie.cpp
+	$(CC) -c $(COMP_FLAG) Classes/Movie.cpp
+	mv Movie.o build
+
+build/Group.o: Classes/Group.cpp
+	$(CC) -c $(COMP_FLAG) Classes/Group.cpp
+	mv Group.o build
 
 .PHONY: clean
 clean:
-	rm -f $(PROG_NAME) $(TEST_NAME) $(OBJS) $(TEST_OBJS)
+	rm -f $(PROG_NAME) $(OBJS)
 

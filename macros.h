@@ -1,17 +1,21 @@
 #pragma once
-#include <iostream>
 
-#define PRINT_GREEN(x)   \
-printf("\033[32m%s", x); \
-printf("\033[0m")
+#define PRINT_GREEN(x)          \
+do {                            \
+    printf("\033[32m%s", x);    \
+    printf("\033[0m");          \
+} while(0)
 
-#define PRINT_RED(x)     \
-printf("\033[31m%s", x); \
-printf("\033[0m")
+#define PRINT_RED(x)            \
+do {                            \
+    printf("\033[31m%s", x);    \
+    printf("\033[0m");          \
+} while(0)
 
-#define PRINT_LINE(n)        \
-std::cout << n << std::endl; \
-(void)0  
+#define PRINT_LINE(n)               \
+do {                                \
+    std::cout << n << std::endl;    \
+} while(0)
 
 #define RUN_TEST(test)                          \
 do {                                            \
@@ -32,5 +36,5 @@ do {                                                                            
     }                                                                           \
 } while (0)
 
-
-#define MAX(n,m) ((n) > (m) ? (n) : (m))
+#define MAX(n,m)      \
+((n) > (m) ? (n) : (m))
