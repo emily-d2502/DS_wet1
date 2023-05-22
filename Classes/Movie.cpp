@@ -52,7 +52,7 @@ bool Movie::operator>(const Movie& other) const {
         return true;
     if ((this->_tot_points > other._tot_points) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
         return true;
-    if ((this->_tot_points > other._tot_points) == (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
+    if ((this->_tot_points == other._tot_points) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
         return this->_id < other._id;
     return false;
 }
@@ -60,11 +60,17 @@ bool Movie::operator>(const Movie& other) const {
 
 
 bool Movie::operator<(const Movie& other) const {
-    return *this > other;
+    if (!(*this > other) && (*this != other))
+        return true;
+    return false;
 }
 
 bool Movie::operator==(const Movie& other) const {
-    return !(*this > other) && !(*this < other);
+    if ((this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
+        if (this->_tot_points == other._tot_points)
+            if (this->_id == other._id)
+                return true;
+    return false;
 }
 
 bool Movie::operator!=(const Movie& other) const {

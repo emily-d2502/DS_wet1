@@ -48,7 +48,7 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
 		_movies_genre_trees[(int)Genre::NONE].insert(*movie, movie);
     } catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
-    } catch (const AVL<Movie>::KeyExists& e) {
+    } catch (const AVL<Movie, Movie>::KeyExists& e) {
         return StatusType::FAILURE;
     } catch (const AVL<Movie, int>::KeyExists& e) {
         return StatusType::FAILURE;
@@ -158,7 +158,7 @@ StatusType streaming_database::add_user_to_group(int userId, int groupId)
 	} catch (const AVL<Group, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	} catch (const AVL<User, int>::KeyNotFound& e) {
-		return StatusType::FAILURE;
+    		return StatusType::FAILURE;
 	}
     return StatusType::SUCCESS;
 }
