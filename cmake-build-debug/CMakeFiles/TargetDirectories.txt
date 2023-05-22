@@ -1,0 +1,3 @@
+/Users/adi/Technion/mivne netunim/DS_cur/cmake-build-debug/CMakeFiles/DS_cur.dir
+/Users/adi/Technion/mivne netunim/DS_cur/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/adi/Technion/mivne netunim/DS_cur/cmake-build-debug/CMakeFiles/rebuild_cache.dir

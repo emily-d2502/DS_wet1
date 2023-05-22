@@ -1,14 +1,13 @@
 
 #pragma once
-#include "class_defines.h"
-
+#include "../macros.h"
+#include <assert.h>
 #define GENERIC_FRIEND_CLASS(x) \
 template<typename, typename>    \
 friend class x
 
 template<typename T, typename K>
-class Node
-{
+class Node {
 public:
     Node(const K& key, T *data);
     Node(const Node&) = default;
@@ -16,11 +15,12 @@ public:
     ~Node() = default;
     static void swap(Node *v, Node *u);
 
-#if defined(DBUG)
-public:
-#else
+    void deleteData(Node<T,K>* root);
+
+    void deleteKeys(Node<T,K>* root);
+
+
 private:
-#endif
     GENERIC_FRIEND_CLASS(AVL);
 
     K _key;
@@ -35,7 +35,6 @@ private:
 
     static int BF(Node *v);
     static int height(Node *v);
-    static void rotations(Node *v);
     static void rr_rotation(Node *v);
     static void ll_rotation(Node *v);
     static void lr_rotation(Node *v);
@@ -43,19 +42,15 @@ private:
 };
 
 template<typename T, typename K>
-Node<T,K>::Node(const K& key, T *data)
-{
-    _key = key;
-    _data = data;
-    _left = nullptr;
-    _right = nullptr;
-
-    _height = 0;
-}
+Node<T,K>::Node(const K& key, T *data):
+    _key(key),
+    _data(data),
+    _left(nullptr),
+    _right(nullptr),
+    _height(0) {}
 
 template<typename T, typename K>
-void Node<T,K>::swap(Node *v, Node *u)
-{
+void Node<T,K>::swap(Node *v, Node *u) {
     T *temp_data = u->_data;
     u->_data = v->_data;
     v->_data = temp_data;
@@ -89,8 +84,7 @@ Node<T,K> *Node<T,K>::only_child() {
 
 
 template<typename T, typename K>
-int Node<T,K>::BF(Node *v)
-{
+int Node<T,K>::BF(Node *v) {
     if (v->_left && v->_right) {
         return v->_left->_height - v->_right->_height;
     }
@@ -105,8 +99,7 @@ int Node<T,K>::BF(Node *v)
 
 
 template<typename T, typename K>
-int Node<T,K>::height(Node *v)
-{
+int Node<T,K>::height(Node *v) {
     if (v->_left && v->_right) {
         return MAX(v->_left->_height, v->_right->_height) + 1;
     }
@@ -121,8 +114,7 @@ int Node<T,K>::height(Node *v)
 
 
 template<typename T, typename K>
-void Node<T,K>::rr_rotation(Node *v)
-{
+void Node<T,K>::rr_rotation(Node *v) {
     Node *u = v->_right;
     swap(u,v);
 
@@ -137,8 +129,7 @@ void Node<T,K>::rr_rotation(Node *v)
 
 
 template<typename T, typename K>
-void Node<T,K>::ll_rotation(Node *v)
-{
+void Node<T,K>::ll_rotation(Node *v) {
     Node *u = v->_left;
     swap(u,v);
 
@@ -152,17 +143,46 @@ void Node<T,K>::ll_rotation(Node *v)
 }
 
 template<typename T, typename K>
-void Node<T,K>::lr_rotation(Node *v)
-{
+void Node<T,K>::lr_rotation(Node *v) {
     rr_rotation(v->_left);
     ll_rotation(v);
     v->_height = height(v);
 }
 
 template<typename T, typename K>
-void Node<T,K>::rl_rotation(Node *v)
-{
+void Node<T,K>::rl_rotation(Node *v) {
     ll_rotation(v->_right);
     rr_rotation(v);
     v->_height = height(v);
+}
+
+
+template<class T,class K>
+void Node<T,K>::deleteData(Node* root)
+{
+    if (root == nullptr){
+        return;
+    }
+    if (root->_left){
+        root->_left->deleteData(root->_left);
+    }
+    if (root->_right){
+        root->_right->deleteData(root->_right);
+    }
+    delete root->_data;
+}
+
+template<class T,class K>
+void Node<T,K>::deleteKeys(Node* root)
+{
+    if (root == nullptr){
+        return;
+    }
+    if (root->_left){
+        root->_left->deleteData(root->_left);
+    }
+    if (root->_right){
+        root->_right->deleteData(root->_right);
+    }
+    delete &(root->_key);
 }

@@ -1,0 +1,27 @@
+# ninja log v5
+1	551	1684760563836914613	CMakeFiles/DS_cur.dir/Classes/Movie.cpp.o	ae15d0f6f43c711d
+1	555	1684760563841713019	CMakeFiles/DS_cur.dir/Classes/Group.cpp.o	18f8f2cd7230f905
+1	568	1684760563854410773	CMakeFiles/DS_cur.dir/Classes/User.cpp.o	6dbb66a8a3848eac
+2	578	1684760563864604975	CMakeFiles/DS_cur.dir/maina1.cpp.o	c2fd4f272c8a5b4d
+2	583	1684760563870357546	CMakeFiles/DS_cur.dir/StreamingDBa1.cpp.o	3b3f3435c88a6b96
+5	535	1684772673636947901	CMakeFiles/DS_cur.dir/Classes/User.cpp.o	6dbb66a8a3848eac
+5	537	1684772673640030401	CMakeFiles/DS_cur.dir/Classes/Movie.cpp.o	ae15d0f6f43c711d
+4	537	1684772673641660732	CMakeFiles/DS_cur.dir/Classes/Group.cpp.o	18f8f2cd7230f905
+5	552	1684772673656461622	CMakeFiles/DS_cur.dir/maina1.cpp.o	c2fd4f272c8a5b4d
+5	559	1684772673663377768	CMakeFiles/DS_cur.dir/StreamingDBa1.cpp.o	3b3f3435c88a6b96
+1	16	1684772697326728058	CMakeFiles/DS_cur.dir/AVL/testing_avl.cpp.o	3da69be894b62cbb
+17	68	1684772697378282034	DS_cur	dac87ee7ce8dd274
+5	516	1684774453998831792	CMakeFiles/DS_cur.dir/Classes/Movie.cpp.o	ae15d0f6f43c711d
+6	517	1684774453995520007	CMakeFiles/DS_cur.dir/Classes/User.cpp.o	6dbb66a8a3848eac
+5	519	1684774454002296365	CMakeFiles/DS_cur.dir/Classes/Group.cpp.o	18f8f2cd7230f905
+6	543	1684774454026382795	CMakeFiles/DS_cur.dir/maina1.cpp.o	c2fd4f272c8a5b4d
+6	553	1684774454036549852	CMakeFiles/DS_cur.dir/StreamingDBa1.cpp.o	3b3f3435c88a6b96
+553	604	1684774454089122343	DS_cur	dac87ee7ce8dd274
+1	251	1684774591117654546	CMakeFiles/DS_cur.dir/StreamingDBa1.cpp.o	3b3f3435c88a6b96
+251	286	1684774591153820731	DS_cur	dac87ee7ce8dd274
+1	214	1684774612893819620	CMakeFiles/DS_cur.dir/Classes/User.cpp.o	6dbb66a8a3848eac
+215	245	1684774612925427679	DS_cur	dac87ee7ce8dd274
+1	231	1684774967680337617	CMakeFiles/DS_cur.dir/Classes/Group.cpp.o	18f8f2cd7230f905
+231	265	1684774967716083356	DS_cur	dac87ee7ce8dd274
+1	252	1684775231447975265	CMakeFiles/DS_cur.dir/StreamingDBa1.cpp.o	3b3f3435c88a6b96
+252	285	1684775231483101145	DS_cur	dac87ee7ce8dd274

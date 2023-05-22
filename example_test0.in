@@ -1,0 +1,23 @@
+add_user_to_group 29076 3836
+add_group 26348
+add_group 5304
+remove_movie 34152
+rate_movie 34212 37408 86
+user_watch 48722 20888
+get_num_views 24991 1
+add_group 26143
+user_watch 48464 9959
+add_group 25771
+add_movie 22189 1 16 False
+get_all_movies 4
+add_group 32937
+add_user_to_group 27526 32937
+group_watch 37423 22189
+add_user 5257 False
+get_all_movies_count 3
+get_group_recommendation 46742
+remove_movie 22189
+add_group 49
+get_all_movies_count 0
+get_all_movies_count 1
+remove_user 5257
