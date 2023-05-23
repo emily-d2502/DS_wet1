@@ -49,8 +49,10 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
     } catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     } catch (const AVL<Movie, Movie>::KeyExists& e) {
+        //kill data here? no need to clean other trees
         return StatusType::FAILURE;
     } catch (const AVL<Movie, int>::KeyExists& e) {
+        //kill data here? no need to clean other trees
         return StatusType::FAILURE;
     }
 	return StatusType::SUCCESS;
@@ -88,6 +90,7 @@ StatusType streaming_database::add_user(int userId, bool isVip)
 	} catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     } catch (const AVL<User, int>::KeyExists& e) {
+        //kill data here?
 		return StatusType::FAILURE;
 	}
 	return StatusType::SUCCESS;
@@ -107,7 +110,9 @@ StatusType streaming_database::remove_user(int userId)
         _users_id_tree.remove(userId);
 	} catch (const AVL<User, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
-	}
+	} catch (const AVL<Group, int>::KeyNotFound& e) {
+        return StatusType::FAILURE;
+    }
 	return StatusType::SUCCESS;
 }
 
@@ -122,9 +127,10 @@ StatusType streaming_database::add_group(int groupId)
 		_groups_id_tree.insert(groupId, group);
 	} catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
-    } catch (const AVL<Movie, int>::KeyExists& e) {
-		return StatusType::FAILURE;
-	}
+	} catch (const AVL<Group, int>::KeyExists& e) {
+        //kill data here?
+        return StatusType::FAILURE;
+    }
 	return StatusType::SUCCESS;
 }
 
@@ -134,7 +140,6 @@ StatusType streaming_database::remove_group(int groupId)
         return StatusType::INVALID_INPUT;
 	}
 	try {
-        //
         Group& group = _groups_id_tree.find(groupId);
         AVL<User,int>* Tree = group.getMembers();
         User **tmp = new User*[Tree->size()];
@@ -142,9 +147,7 @@ StatusType streaming_database::remove_group(int groupId)
         for (int i = 0; i < Tree->size(); ++i) {
             tmp[i]->remove_from_group(&group);
         }
-
         _groups_id_tree.remove(groupId);
-        //
 
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
@@ -211,10 +214,9 @@ StatusType streaming_database::group_watch(int groupId,int movieId)
 	try {
 		Movie& movie = _movies_id_tree.find(movieId);
 		Group& group = _groups_id_tree.find(groupId);
-        if (group.size() == 0 || (movie.vip() && !group.vip() )) {
+        if (group.size() == 0 || (movie.vip() && !group.vip())) {
             return StatusType::FAILURE;
         }
-
         _movies_genre_trees[(int)movie.genre()].remove(movie);
         _movies_genre_trees[(int)Genre::NONE].remove(movie);
         movie.watch(group);

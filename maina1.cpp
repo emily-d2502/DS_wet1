@@ -72,6 +72,8 @@ int main()
             print(op, obj->remove_user(d1));
         } else if (!op.compare("add_group")) {
             cin >> d1;
+            if(d1 == 8812)
+                int i = 0;
             print(op, obj->add_group(d1));
         } else if (!op.compare("remove_group")) {
             cin >> d1;
@@ -103,6 +105,8 @@ int main()
             print(op, obj->rate_movie(d1, d2, d3));
         } else if (!op.compare("get_group_recommendation")) {
             cin >> d1;
+            if(d1 == 8812)
+                int i = 0;
             print(op, obj->get_group_recommendation(d1));
         } else {
             cout << "Unknown command: " << op << endl;
