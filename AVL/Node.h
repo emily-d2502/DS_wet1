@@ -45,8 +45,8 @@ template<typename T, typename K>
 Node<T,K>::Node(const K& key, T *data):
     _key(key),
     _data(data),
-    _left(nullptr),
     _right(nullptr),
+    _left(nullptr),
     _height(0) {}
 
 template<typename T, typename K>

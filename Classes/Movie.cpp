@@ -3,11 +3,12 @@
 
 Movie::Movie(int movieId, Genre genre, int views, bool vipOnly):
     _id(movieId),
-    _genre(genre),
-    _views(views),
     _vip(vipOnly),
+    _views(views),
+    _genre(genre),
     _tot_points(0),
     _number_of_ratings(0) {}
+
 
 int Movie::id() const {
     return _id;

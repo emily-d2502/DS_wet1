@@ -1,6 +1,7 @@
 
 #include "User.h"
 
+
 User::User(int id, bool vip):
     _id(id),
     _vip(vip),
@@ -14,9 +15,7 @@ bool User::vip() const {
     return this->_vip;
 }
 
-Group * User::getGroup() const {
-    return this->_group;
-}
+
 
 void User::watch(Genre genre) {
     ++_views[(int)genre];
@@ -27,12 +26,26 @@ void User::watch(Genre genre) {
     }
 }
 
+
+
+
+
+
+
 void User::add_to_group(Group *group) {
     _group = group;
     for (int i = 0; i <= (int)Genre::NONE; ++i) {
         _views[i] -= group->_group_views_parameter[i];
     }
 }
+
+void User::remove_from_group(Group *group) {
+    for (int i = 0; i <= (int)Genre::NONE; ++i) {
+        _views[i] += group->_group_views_parameter[i];
+    }
+    _group = nullptr;
+}
+
 
 int User::views(Genre genre) const {
     if (!_group) {
@@ -44,4 +57,8 @@ int User::views(Genre genre) const {
 
 int User::id() const {
     return _id;
+}
+
+Group * User::getGroup() {
+    return this->_group;
 }

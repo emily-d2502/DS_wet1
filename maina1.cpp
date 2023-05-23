@@ -36,6 +36,8 @@ int main()
     {
         if (!op.compare("add_movie")) {
             cin >> d1 >> g1 >> d2 >> b1;
+            if(d1 == 2772)
+                int i =0;
             if (!b1.compare("True")) {
                 b = true;
             }
@@ -74,7 +76,7 @@ int main()
             print(op, obj->remove_group(d1));
         } else if (!op.compare("add_user_to_group")) {
             cin >> d1 >> d2;
-            if(d1 == 448 && d2 == 38192 && !op.compare("add_user_to_group"))
+            if(d1 == 41050 && d2 == 38192 && !op.compare("add_user_to_group"))
                 int i = 0;
             print(op, obj->add_user_to_group(d1, d2));
         } else if (!op.compare("get_all_movies_count")) {

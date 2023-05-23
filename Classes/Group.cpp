@@ -1,5 +1,9 @@
 
 #include "Group.h"
+class Movie;
+
+
+
 
 int Group::getMaxViews() const {
     int genre = 0;
@@ -30,6 +34,11 @@ bool Group::vip() const {
     return _vip > 0;
 }
 
+template<typename T, typename K>
+AVL<T,K>* Group::getMembers() const {
+    return &this->_members;
+}
+
 void Group::watch(Genre genre) {
     ++_group_views_parameter[(int)genre];
     ++_group_views_parameter[(int)Genre::NONE];
@@ -43,3 +52,11 @@ void Group::removeUser(const User& user) {
         _total_views[i] -= user.views((Genre)i);
     }
 }
+
+//void Group::removeMembersAffiliation() {
+//    Movie **tmp = new Movie*[_members.size()];
+//    _members.inorder(tmp);
+//    for (int i = 0; i < _members.size(); ++i) {
+//
+//    }
+//}

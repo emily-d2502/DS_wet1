@@ -22,6 +22,8 @@ public:
     void add_member(int userId, User *user);
     void removeUser(const User& user);
 
+    template<typename T, typename K>
+    AVL<T, K> *getMembers() const;
 
 private:
     int _id;
@@ -31,6 +33,8 @@ private:
     int _group_views_parameter[(int)Genre::NONE + 1];
 
     friend class User;
+
+
 };
 
 

@@ -19,13 +19,16 @@ public:
     void watch(Genre genre);
     int views(Genre genre) const;
     void add_to_group(Group *group);
-    Group * getGroup() const;
+    void remove_from_group(Group *group);
+    Group * getGroup();
+
 
 private:
     int _id;
     bool _vip;
     int _views[(int)Genre::NONE + 1];
     Group *_group;
+
 };
 
 

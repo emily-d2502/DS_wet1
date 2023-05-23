@@ -133,9 +133,18 @@ StatusType streaming_database::remove_group(int groupId)
 	if (groupId <= 0) {
         return StatusType::INVALID_INPUT;
 	}
-
 	try {
 		_groups_id_tree.remove(groupId);
+        //
+        Group& group = _groups_id_tree.find(groupId);
+        AVL<User,int>* Tree = group.getMembers<User,int>();
+        User **tmp = new User*[Tree->size()];
+        Tree->inorder(tmp);
+        for (int i = 0; i < Tree->size(); ++i) {
+            tmp[i]->remove_from_group(&group);
+        }
+        //
+
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	}
