@@ -34,8 +34,7 @@ bool Group::vip() const {
     return _vip > 0;
 }
 
-template<typename T, typename K>
-AVL<T,K>* Group::getMembers() const {
+AVL<User,int>* Group::getMembers() {
     return &this->_members;
 }
 
@@ -51,6 +50,7 @@ void Group::removeUser(const User& user) {
     for (int i = 0; i <= (int)Genre::NONE; ++i) {
         _total_views[i] -= user.views((Genre)i);
     }
+
 }
 
 //void Group::removeMembersAffiliation() {

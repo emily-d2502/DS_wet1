@@ -137,7 +137,7 @@ StatusType streaming_database::remove_group(int groupId)
 		_groups_id_tree.remove(groupId);
         //
         Group& group = _groups_id_tree.find(groupId);
-        AVL<User,int>* Tree = group.getMembers<User,int>();
+        AVL<User,int>* Tree = group.getMembers();
         User **tmp = new User*[Tree->size()];
         Tree->inorder(tmp);
         for (int i = 0; i < Tree->size(); ++i) {
@@ -206,7 +206,6 @@ StatusType streaming_database::group_watch(int groupId,int movieId)
 		if (!movie.watch(group)) {
 			return StatusType::FAILURE;
 		}
-        //we need to verify that we are keeping the groups data fine
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	} catch (const AVL<Group, int>::KeyNotFound& e) {
@@ -249,7 +248,6 @@ output_t<int> streaming_database::get_num_views(int userId, Genre genre)
 	if (userId <= 0) {
         return StatusType::INVALID_INPUT;
 	}
-
 	try {
 		User& user = _users_id_tree.find(userId);
 		return user.views(genre);

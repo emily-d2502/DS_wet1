@@ -22,8 +22,7 @@ public:
     void add_member(int userId, User *user);
     void removeUser(const User& user);
 
-    template<typename T, typename K>
-    AVL<T, K> *getMembers() const;
+    AVL<User,int>* getMembers();
 
 private:
     int _id;

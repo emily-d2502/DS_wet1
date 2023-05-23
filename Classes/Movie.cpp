@@ -51,9 +51,9 @@ void Movie::addTotalPoints(int points) {
 bool Movie::operator>(const Movie& other) const {
     if ((this->_tot_points * other._number_of_ratings) > (other._tot_points * this->_number_of_ratings))
         return true;
-    if ((this->_tot_points > other._tot_points) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
+    if ((this->_views > other._views) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
         return true;
-    if ((this->_tot_points == other._tot_points) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
+    if ((this->_views == other._views) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
         return this->_id < other._id;
     return false;
 }
