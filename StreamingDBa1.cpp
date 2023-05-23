@@ -134,7 +134,6 @@ StatusType streaming_database::remove_group(int groupId)
         return StatusType::INVALID_INPUT;
 	}
 	try {
-		_groups_id_tree.remove(groupId);
         //
         Group& group = _groups_id_tree.find(groupId);
         AVL<User,int>* Tree = group.getMembers();
@@ -143,11 +142,15 @@ StatusType streaming_database::remove_group(int groupId)
         for (int i = 0; i < Tree->size(); ++i) {
             tmp[i]->remove_from_group(&group);
         }
+
+        _groups_id_tree.remove(groupId);
         //
 
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
-	}
+	} catch (const AVL<Group, int>::KeyNotFound& e) {
+        return StatusType::FAILURE;
+    }
 	return StatusType::SUCCESS;
 }
 
@@ -181,15 +184,21 @@ StatusType streaming_database::user_watch(int userId, int movieId)
 	try {
 		Movie& movie = _movies_id_tree.find(movieId);
 		User& user = _users_id_tree.find(userId);
-
-		if (!movie.watch(user)) {
-			return StatusType::FAILURE;
-		}
+        if (movie.vip() && !user.vip()) {
+            return StatusType::FAILURE;
+        }
+        _movies_genre_trees[(int)movie.genre()].remove(movie);
+        _movies_genre_trees[(int)Genre::NONE].remove(movie);
+		movie.watch(user);
+        _movies_genre_trees[(int)Genre::NONE].insert(movie, &movie);
+        _movies_genre_trees[(int)movie.genre()].insert(movie, &movie);
 	} catch (const AVL<User, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
-	}
+	} catch (const AVL<Movie, Movie>::KeyNotFound& e) {
+        return StatusType::FAILURE;
+    }
     return StatusType::SUCCESS;
 }
 
@@ -202,15 +211,23 @@ StatusType streaming_database::group_watch(int groupId,int movieId)
 	try {
 		Movie& movie = _movies_id_tree.find(movieId);
 		Group& group = _groups_id_tree.find(groupId);
+        if (group.size() == 0 || (movie.vip() && !group.vip() )) {
+            return StatusType::FAILURE;
+        }
 
-		if (!movie.watch(group)) {
-			return StatusType::FAILURE;
-		}
+        _movies_genre_trees[(int)movie.genre()].remove(movie);
+        _movies_genre_trees[(int)Genre::NONE].remove(movie);
+        movie.watch(group);
+        _movies_genre_trees[(int)Genre::NONE].insert(movie, &movie);
+        _movies_genre_trees[(int)movie.genre()].insert(movie, &movie);
+
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	} catch (const AVL<Group, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
-	}
+    } catch (const AVL<Movie, Movie>::KeyNotFound& e) {
+        return StatusType::FAILURE;
+    }
 	return StatusType::SUCCESS;
 }
 

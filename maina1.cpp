@@ -67,6 +67,8 @@ int main()
             print(op, obj->add_user(d1, b));
         } else if (!op.compare("remove_user")) {
             cin >> d1;
+            if(d1 == 41050)
+                int i = 0;
             print(op, obj->remove_user(d1));
         } else if (!op.compare("add_group")) {
             cin >> d1;
@@ -90,6 +92,8 @@ int main()
             print(op, obj->user_watch(d1, d2));
         } else if (!op.compare("group_watch")) {
             cin >> d1 >> d2;
+            if(d1 == 38192 && d2 == 35004)
+                int i = 0;
             print(op, obj->group_watch(d1, d2));
         } else if (!op.compare("get_num_views")) {
             cin >> d1 >> g1;

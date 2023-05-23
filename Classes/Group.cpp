@@ -22,7 +22,7 @@ int Group::size() const {
 void Group::add_member(int userId, User *user) {
     _members.insert(userId, user);
     if (user->vip()) {
-        ++_vip;
+        _vip++;
     }
     for (int i = 0; i <= (int)Genre::NONE; ++i) {
         _total_views[i] += user->views((Genre)i);
@@ -46,17 +46,11 @@ void Group::watch(Genre genre) {
 }
 
 void Group::removeUser(const User& user) {
+    if (user.vip())
+        _vip--;
     _members.remove(user.id());
     for (int i = 0; i <= (int)Genre::NONE; ++i) {
         _total_views[i] -= user.views((Genre)i);
     }
-
 }
 
-//void Group::removeMembersAffiliation() {
-//    Movie **tmp = new Movie*[_members.size()];
-//    _members.inorder(tmp);
-//    for (int i = 0; i < _members.size(); ++i) {
-//
-//    }
-//}
