@@ -10,10 +10,10 @@
 class User;
 class Group {
 public:
-    Group()                            = default;
+    Group(int groupID);
     Group(const Group& other)            = delete;
     Group& operator=(const Group& other) = delete;
-    ~Group()                             = default;
+    ~Group();
 
     int size() const;
     bool vip() const;

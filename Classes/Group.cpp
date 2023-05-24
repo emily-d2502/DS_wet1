@@ -3,7 +3,13 @@
 class Movie;
 
 
+Group::Group(int groupId) {
+    _id = groupId;
+}
 
+Group::~Group() {
+
+}
 
 int Group::getMaxViews() const {
     int genre = 0;

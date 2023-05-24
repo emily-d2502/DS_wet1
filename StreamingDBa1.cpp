@@ -42,8 +42,9 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
         return StatusType::INVALID_INPUT;
 	}
 
+	Movie *movie;
     try {
-        Movie *movie = new Movie(movieId, genre, views, vipOnly);
+        movie = new Movie(movieId, genre, views, vipOnly);
     	_movies_id_tree.insert(movieId, movie);
 		_movies_genre_trees[(int)genre].insert(*movie, movie);
 		_movies_genre_trees[(int)Genre::NONE].insert(*movie, movie);
@@ -54,10 +55,10 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
     } catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     } catch (const AVL<Movie, Movie>::KeyExists& e) {
-        //kill data here? no need to clean other trees
+        delete movie;
         return StatusType::FAILURE;
     } catch (const AVL<Movie, int>::KeyExists& e) {
-        //kill data here? no need to clean other trees
+        delete movie;
         return StatusType::FAILURE;
     }
 	return StatusType::SUCCESS;
@@ -93,13 +94,14 @@ StatusType streaming_database::add_user(int userId, bool isVip)
         return StatusType::INVALID_INPUT;
 	}
 
+	User *user;
 	try {
-		User *user = new User(userId, isVip);
+		user = new User(userId, isVip);
 		_users_id_tree.insert(userId, user);
 	} catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     } catch (const AVL<User, int>::KeyExists& e) {
-        //kill data here?
+        delete user;
 		return StatusType::FAILURE;
 	}
 	return StatusType::SUCCESS;
@@ -131,13 +133,14 @@ StatusType streaming_database::add_group(int groupId)
         return StatusType::INVALID_INPUT;
 	}
 
+	Group *group;
 	try {
-		Group *group = new Group();
+		group = new Group(groupId);
 		_groups_id_tree.insert(groupId, group);
 	} catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
 	} catch (const AVL<Group, int>::KeyExists& e) {
-        //kill data here?
+        delete group;
         return StatusType::FAILURE;
     }
 	return StatusType::SUCCESS;
@@ -148,6 +151,7 @@ StatusType streaming_database::remove_group(int groupId)
 	if (groupId <= 0) {
         return StatusType::INVALID_INPUT;
 	}
+
 	try {
         Group& group = _groups_id_tree.find(groupId);
         AVL<User,int>* Tree = group.getMembers();
