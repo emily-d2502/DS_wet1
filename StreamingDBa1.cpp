@@ -290,11 +290,13 @@ StatusType streaming_database::rate_movie(int userId, int movieId, int rating)
 		if (movie.vip() && !user.vip()) {
 			return StatusType::FAILURE;
 		}
+
 		_movies_genre_trees[(int)movie.genre()].remove(movie);
 		_movies_genre_trees[(int)Genre::NONE].remove(movie);
 
 		movie.addNumberRatings();
         movie.addTotalPoints(rating);
+        movie.updateRating();
 
 		_movies_genre_trees[(int)Genre::NONE].insert(movie, &movie);
 		_movies_genre_trees[(int)movie.genre()].insert(movie, &movie);

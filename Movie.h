@@ -22,6 +22,7 @@ public:
     Genre genre() const;
     void addNumberRatings();
     void addTotalPoints(int points);
+    void updateRating();
 
     bool operator>(const Movie& other) const;
     bool operator>=(const Movie& other) const;
@@ -37,6 +38,7 @@ private:
     Genre _genre;
     int _tot_points;
     int _number_of_ratings;
+    double _rating;
 };
 
 #endif

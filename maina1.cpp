@@ -91,6 +91,8 @@ int main()
             query_get_all_movies(op, obj, (Genre) g1);
         } else if (!op.compare("user_watch")) {
             cin >> d1 >> d2;
+            if (d1 == 9251 && d2 == 8539)
+                int j =1;
             print(op, obj->user_watch(d1, d2));
         } else if (!op.compare("group_watch")) {
             cin >> d1 >> d2;
