@@ -49,6 +49,11 @@ void Movie::addTotalPoints(int points) {
 }
 
 bool Movie::operator>(const Movie& other) const {
+    if ((this->_number_of_ratings == 0) && (other._number_of_ratings > 0))
+        return (other._tot_points/other._number_of_ratings)>0;
+    if ((this->_number_of_ratings > 0) && (other._number_of_ratings == 0))
+        return (this->_tot_points/this->_number_of_ratings)>0;
+    
     if ((this->_tot_points * other._number_of_ratings) > (other._tot_points * this->_number_of_ratings))
         return true;
     if ((this->_views > other._views) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
@@ -56,18 +61,17 @@ bool Movie::operator>(const Movie& other) const {
     if ((this->_views == other._views) && (this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
         return this->_id < other._id;
     return false;
+
 }
 
 bool Movie::operator==(const Movie& other) const {
-    if ((this->_tot_points * other._number_of_ratings) == (other._tot_points * this->_number_of_ratings))
-        if (this->_views == other._views)
-            if (this->_id == other._id)
-                return true;
+    if (this->_id == other._id)
+        return true;
     return false;
 }
 
 bool Movie::operator<(const Movie& other) const {
-    if (!(*this > other) && (*this != other))
+    if (!(*this > other) && !(*this == other))
         return true;
     return false;
 }
