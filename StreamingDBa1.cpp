@@ -252,7 +252,7 @@ StatusType streaming_database::get_all_movies(Genre genre, int *const output)
 		Movie **tmp = new Movie*[size];
 		_movies_genre_trees[(int)genre].inorder(tmp);
 		for (int i = 0; i < size; ++i) {
-			output[i] = tmp[i]->id();
+			output[size-i-1] = tmp[i]->id();
 		}
 		delete[] tmp;
 
