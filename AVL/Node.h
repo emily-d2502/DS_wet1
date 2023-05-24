@@ -9,10 +9,10 @@ friend class x
 template<typename T, typename K>
 class Node {
 public:
-    Node(const K& key, T *data);
-    Node(const Node&) = default;
-    Node& operator=(const Node&) = default;
-    ~Node() = default;
+    Node(const K& key, T *data, bool memory);
+    Node(const Node&) = delete;
+    Node& operator=(const Node&) = delete;
+    ~Node();
     static void swap(Node *v, Node *u);
 
 private:
@@ -24,6 +24,7 @@ private:
     Node *_left;
 
     int _height;
+    bool _memory;
     bool leaf();
     int children();
     Node *only_child();
@@ -37,12 +38,20 @@ private:
 };
 
 template<typename T, typename K>
-Node<T,K>::Node(const K& key, T *data):
+Node<T,K>::Node(const K& key, T *data, bool memory):
     _key(key),
     _data(data),
     _left(nullptr),
     _right(nullptr),
-    _height(0) {}
+    _height(0),
+    _memory(memory) {}
+
+template<typename T, typename K>
+Node<T,K>::~Node() {
+    if (_memory) {
+        delete _data;
+    }
+}
 
 template<typename T, typename K>
 void Node<T,K>::swap(Node *v, Node *u) {
