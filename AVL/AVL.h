@@ -1,5 +1,6 @@
 
 #pragma once
+#include <iostream>
 #include "Node.h"
 #include "../Array.h"
 #define NODE Node<T,K>
@@ -18,17 +19,17 @@ public:
     void insert(const K& key, T *data);
     void remove(const K& key);
     void inorder(T** const output) const;
+    void print() const;
 
-    void deleteTreeData();
-
-    void deleteTreeKeys();
+    template<typename Function>
+    void apply(Function func);
 
     class KeyExists {};
     class KeyNotFound {};
 
 private:
-    NODE *_root;
     int _size;
+    NODE *_root;
     bool _memory;
 
     void rotations(NODE *v);
@@ -36,16 +37,19 @@ private:
     NODE *closest_down(NODE *v);
     NODE *insert(NODE *root, NODE *v);
     NODE *remove(NODE *root, const K& key);
-    void inorder(Node<T,K> *p, Array<T*>& arr) const;
+    void inorder(NODE *p, Array<T*>& arr) const;
     void delete_tree(NODE *root);
+    void print(const std::string& prefix, NODE *root, bool left) const;
+
+    template<typename Function>
+    void apply(NODE *root, Function func);
 };
 
 template<typename T, typename K>
-AVL<T,K>::AVL(bool memory) {
-    _root = nullptr;
-    _size = 0;
-    _memory = memory;
-}
+AVL<T,K>::AVL(bool memory):
+    _size(0),
+    _root(nullptr),
+    _memory(memory) {}
 
 template<typename T, typename K>
 AVL<T,K>::~AVL() {
@@ -210,4 +214,38 @@ void AVL<T,K>::delete_tree(NODE *root) {
     delete_tree(root->_left);
     delete_tree(root->_right);
     delete root;
+}
+
+template<typename T, typename K>
+template<typename Function>
+void AVL<T,K>::apply(Function func) {
+    apply(_root, func);
+}
+
+template<typename T, typename K>
+template<typename Function>
+void AVL<T,K>::apply(NODE *root, Function func) {
+    if (!root) {
+        return;
+    }
+    func(*(root->_data));
+    apply(root->_left, func);
+    apply(root->_right, func);
+}
+
+template<typename T, typename K>
+void AVL<T,K>::print(const std::string& prefix, NODE *root, bool left) const {
+    if (!root) {
+        return;
+    }
+    std::cout << prefix << (left ? "├──" : "└──" );
+    std::cout << "(" << root->_key << ", " << *root->_data << ")" << std::endl;
+
+    print(prefix + (left ? "│   " : "    "), root->_left, true);
+    print(prefix + (left ? "│   " : "    "), root->_right, false);
+}
+
+template<typename T, typename K>
+void AVL<T,K>::print() const {
+    print("", _root, false);
 }

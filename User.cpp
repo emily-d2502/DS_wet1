@@ -15,8 +15,6 @@ bool User::vip() const {
     return this->_vip;
 }
 
-
-
 void User::watch(Genre genre) {
     ++_views[(int)genre];
     ++_views[(int)Genre::NONE];
@@ -25,12 +23,6 @@ void User::watch(Genre genre) {
         ++_group->_total_views[(int)Genre::NONE];
     }
 }
-
-
-
-
-
-
 
 void User::add_to_group(Group *group) {
     _group = group;
@@ -59,6 +51,10 @@ int User::id() const {
     return _id;
 }
 
-Group * User::getGroup() {
+Group *User::getGroup() {
     return this->_group;
+}
+
+void User::set_group_null(User& user) {
+    user.remove_from_group(user._group);
 }

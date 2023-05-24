@@ -8,7 +8,7 @@ Group::Group(int groupId) {
 }
 
 Group::~Group() {
-
+    _members.apply(User::set_group_null);
 }
 
 int Group::getMaxViews() const {

@@ -20,8 +20,8 @@ private:
 
     K _key;
     T* _data;
-    Node *_right;
     Node *_left;
+    Node *_right;
 
     int _height;
     bool _memory;

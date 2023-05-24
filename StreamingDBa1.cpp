@@ -28,11 +28,7 @@ _movies_id_tree(true),
 _movies_genre_trees(),
 _most_recommended() {}
 
-streaming_database::~streaming_database()
-{
-
-}
-
+streaming_database::~streaming_database() {}
 
 StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bool vipOnly)
 {
@@ -48,7 +44,7 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
 		_movies_genre_trees[(int)Genre::NONE].insert(*movie, movie);
 
         _most_recommended[(int)genre] = _movies_genre_trees[(int)genre].max();
-        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
+        _most_recommended[(int)Genre::NONE] = _movies_genre_trees[(int)Genre::NONE].max();
 
     } catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
@@ -74,9 +70,8 @@ StatusType streaming_database::remove_movie(int movieId)
 		_movies_genre_trees[(int)Genre::NONE].remove(movie);
 		_movies_id_tree.remove(movieId);
 
-        _most_recommended[(int)movie.genre()] = (_movies_genre_trees[(int)movie.genre()].max());
-        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
-
+        _most_recommended[(int)movie.genre()] = _movies_genre_trees[(int)movie.genre()].max();
+        _most_recommended[(int)Genre::NONE] = _movies_genre_trees[(int)Genre::NONE].max();
 
 	} catch (const AVL<Movie>::KeyNotFound& e) {
         return StatusType::FAILURE;
@@ -151,17 +146,7 @@ StatusType streaming_database::remove_group(int groupId)
 	}
 
 	try {
-        Group& group = _groups_id_tree.find(groupId);
-        AVL<User,int>* Tree = group.getMembers();
-        User **tmp = new User*[Tree->size()];
-        Tree->inorder(tmp);
-        for (int i = 0; i < Tree->size(); ++i) {
-            tmp[i]->remove_from_group(&group);
-        }
         _groups_id_tree.remove(groupId);
-
-	} catch (const AVL<Movie, int>::KeyNotFound& e) {
-		return StatusType::FAILURE;
 	} catch (const AVL<Group, int>::KeyNotFound& e) {
         return StatusType::FAILURE;
     }

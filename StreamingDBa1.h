@@ -17,9 +17,9 @@
 
 #include "wet1util.h"
 #include "AVL/AVL.h"
-#include "Classes/User.h"
-#include "Classes/Group.h"
-#include "Classes/Movie.h"
+#include "User.h"
+#include "Group.h"
+#include "Movie.h"
 
 class streaming_database {
 private:
