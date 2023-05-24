@@ -27,6 +27,7 @@ private:
     AVL<Group, int> _groups_id_tree;
     AVL<Movie, int> _movies_id_tree;
     AVL<Movie> _movies_genre_trees[(int)Genre::NONE + 1];
+    Movie* _most_recommended[(int)Genre::NONE + 1];
 
 public:
 	// <DO-NOT-MODIFY> {

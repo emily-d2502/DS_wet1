@@ -13,7 +13,7 @@ public:
     ~AVL();
 
     int size() const;
-    T& max() const;
+    T* max() const;
     T& find(const K& key);
     void insert(const K& key, T *data);
     void remove(const K& key);
@@ -189,12 +189,14 @@ NODE *AVL<T,K>::closest_down(NODE *v) {
 }
 
 template<typename T, typename K>
-T& AVL<T,K>::max() const {
+T* AVL<T,K>::max() const {
     NODE* tmp = this->_root;
+    if(this->_root == nullptr)
+        return nullptr;
     while(tmp->_right) {
         tmp = tmp->_right;
     }
-    return *tmp->_data;
+    return tmp->_data;
 }
 
 

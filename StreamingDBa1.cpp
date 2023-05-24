@@ -25,7 +25,8 @@ streaming_database::streaming_database() :
 _users_id_tree(),
 _groups_id_tree(),
 _movies_id_tree(),
-_movies_genre_trees() {}
+_movies_genre_trees(),
+_most_recommended() {}
 
 streaming_database::~streaming_database()
 {
@@ -46,6 +47,10 @@ StatusType streaming_database::add_movie(int movieId, Genre genre, int views, bo
     	_movies_id_tree.insert(movieId, movie);
 		_movies_genre_trees[(int)genre].insert(*movie, movie);
 		_movies_genre_trees[(int)Genre::NONE].insert(*movie, movie);
+
+        _most_recommended[(int)genre] = _movies_genre_trees[(int)genre].max();
+        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
+
     } catch (const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     } catch (const AVL<Movie, Movie>::KeyExists& e) {
@@ -69,6 +74,10 @@ StatusType streaming_database::remove_movie(int movieId)
 		_movies_genre_trees[(int)movie.genre()].remove(movie);
 		_movies_genre_trees[(int)Genre::NONE].remove(movie);
 		_movies_id_tree.remove(movieId);
+
+        _most_recommended[(int)movie.genre()] = (_movies_genre_trees[(int)movie.genre()].max());
+        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
+
 
 	} catch (const AVL<Movie>::KeyNotFound& e) {
         return StatusType::FAILURE;
@@ -192,9 +201,13 @@ StatusType streaming_database::user_watch(int userId, int movieId)
         }
         _movies_genre_trees[(int)movie.genre()].remove(movie);
         _movies_genre_trees[(int)Genre::NONE].remove(movie);
-		movie.watch(user);
+        movie.watch(user);
         _movies_genre_trees[(int)Genre::NONE].insert(movie, &movie);
         _movies_genre_trees[(int)movie.genre()].insert(movie, &movie);
+
+        _most_recommended[(int)movie.genre()] = _movies_genre_trees[(int)movie.genre()].max();
+        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
+
 	} catch (const AVL<User, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
@@ -222,6 +235,9 @@ StatusType streaming_database::group_watch(int groupId,int movieId)
         movie.watch(group);
         _movies_genre_trees[(int)Genre::NONE].insert(movie, &movie);
         _movies_genre_trees[(int)movie.genre()].insert(movie, &movie);
+
+        _most_recommended[(int)movie.genre()] = _movies_genre_trees[(int)movie.genre()].max();
+        _most_recommended[(int)Genre::NONE] = (_movies_genre_trees[(int)Genre::NONE].max());
 
 	} catch (const AVL<Movie, int>::KeyNotFound& e) {
 		return StatusType::FAILURE;
@@ -317,10 +333,12 @@ output_t<int> streaming_database::get_group_recommendation(int groupId)
 	 		return StatusType::FAILURE;
 	 	}
          int maxGenre = group.getMaxViews();
+
          if (_movies_genre_trees[maxGenre].size() == 0) {
              return StatusType::FAILURE;
 	 	}
-         return _movies_genre_trees[maxGenre].max().id();
+
+         return _most_recommended[maxGenre]->id();
      } catch (const AVL<Group, int>::KeyNotFound& e) {
      	return StatusType::FAILURE;
      }
