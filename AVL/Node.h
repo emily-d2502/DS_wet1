@@ -9,16 +9,11 @@ friend class x
 template<typename T, typename K>
 class Node {
 public:
-    Node(const K& key, T *data);
-    Node(const Node&) = default;
-    Node& operator=(const Node&) = default;
-    ~Node() = default;
+    Node(const K& key, T *data, bool memory);
+    Node(const Node&) = delete;
+    Node& operator=(const Node&) = delete;
+    ~Node();
     static void swap(Node *v, Node *u);
-
-    void deleteData(Node<T,K>* root);
-
-    void deleteKeys(Node<T,K>* root);
-
 
 private:
     GENERIC_FRIEND_CLASS(AVL);
@@ -29,6 +24,7 @@ private:
     Node *_left;
 
     int _height;
+    bool _memory;
     bool leaf();
     int children();
     Node *only_child();
@@ -42,12 +38,20 @@ private:
 };
 
 template<typename T, typename K>
-Node<T,K>::Node(const K& key, T *data):
+Node<T,K>::Node(const K& key, T *data, bool memory):
     _key(key),
     _data(data),
-    _right(nullptr),
     _left(nullptr),
-    _height(0) {}
+    _right(nullptr),
+    _height(0),
+    _memory(memory) {}
+
+template<typename T, typename K>
+Node<T,K>::~Node() {
+    if (_memory) {
+        delete _data;
+    }
+}
 
 template<typename T, typename K>
 void Node<T,K>::swap(Node *v, Node *u) {
@@ -156,33 +160,3 @@ void Node<T,K>::rl_rotation(Node *v) {
     v->_height = height(v);
 }
 
-
-template<class T,class K>
-void Node<T,K>::deleteData(Node* root)
-{
-    if (root == nullptr){
-        return;
-    }
-    if (root->_left){
-        root->_left->deleteData(root->_left);
-    }
-    if (root->_right){
-        root->_right->deleteData(root->_right);
-    }
-    delete root->_data;
-}
-
-template<class T,class K>
-void Node<T,K>::deleteKeys(Node* root)
-{
-    if (root == nullptr){
-        return;
-    }
-    if (root->_left){
-        root->_left->deleteData(root->_left);
-    }
-    if (root->_right){
-        root->_right->deleteData(root->_right);
-    }
-    delete &(root->_key);
-}

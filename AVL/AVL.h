@@ -7,7 +7,7 @@
 template<typename T, typename K = T>
 class AVL {
 public:
-    AVL();
+    AVL(bool memory = false);
     AVL(const AVL& other) = delete;
     AVL& operator=(const AVL& other) = delete;
     ~AVL();
@@ -29,6 +29,7 @@ public:
 private:
     NODE *_root;
     int _size;
+    bool _memory;
 
     void rotations(NODE *v);
     NODE *closest_up(NODE *v);
@@ -36,17 +37,19 @@ private:
     NODE *insert(NODE *root, NODE *v);
     NODE *remove(NODE *root, const K& key);
     void inorder(Node<T,K> *p, Array<T*>& arr) const;
+    void delete_tree(NODE *root);
 };
 
 template<typename T, typename K>
-AVL<T,K>::AVL() {
+AVL<T,K>::AVL(bool memory) {
     _root = nullptr;
     _size = 0;
+    _memory = memory;
 }
 
 template<typename T, typename K>
 AVL<T,K>::~AVL() {
-
+    delete_tree(_root);
 }
 
 template<typename T, typename K>
@@ -75,7 +78,7 @@ T& AVL<T,K>::find(const K& key) {
 
 template<typename T, typename K>
 void AVL<T,K>::insert(const K& key, T *data) {
-    NODE *v = new NODE(key, data);
+    NODE *v = new NODE(key, data, _memory);
     _root = insert(_root, v);
     ++_size;
 }
@@ -199,13 +202,12 @@ T* AVL<T,K>::max() const {
     return tmp->_data;
 }
 
-
 template<typename T, typename K>
-void AVL<T,K>::deleteTreeData(){
-    _root->deleteData(_root);
-}
-
-template<typename T, typename K>
-void AVL<T,K>::deleteTreeKeys(){
-    _root->deleteKeys(_root);
+void AVL<T,K>::delete_tree(NODE *root) {
+    if (!root) {
+        return;
+    }
+    delete_tree(root->_left);
+    delete_tree(root->_right);
+    delete root;
 }

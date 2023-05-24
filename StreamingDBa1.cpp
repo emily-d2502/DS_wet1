@@ -22,17 +22,15 @@ public:
 };
 
 streaming_database::streaming_database() :
-_users_id_tree(),
-_groups_id_tree(),
-_movies_id_tree(),
+_users_id_tree(true),
+_groups_id_tree(true),
+_movies_id_tree(true),
 _movies_genre_trees(),
 _most_recommended() {}
 
 streaming_database::~streaming_database()
 {
-    _users_id_tree.deleteTreeData();
-    _movies_id_tree.deleteTreeData();
-    _groups_id_tree.deleteTreeData();
+
 }
 
 
